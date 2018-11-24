@@ -1,1 +1,4 @@
 .vscode/settings.json
+classificator_breast.json
+classificator_breast_weights.h5
+NeuralNetwork/.vscode/settings.json
