@@ -1,4 +1,5 @@
 import pandas as pd
+import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from sklearn.model_selection import train_test_split
@@ -38,27 +39,31 @@ def main():
     # Add one hidden layer with Dropout
     # input_dim (Used only in first hidden layer) -> Number of input
     # In the first attempt the units of hidden layer are considered as number_of_input + number_of_output
-    classificator.add(Dense(units=32, activation='relu',
+    classificator.add(Dense(units=16, activation='relu',
                             kernel_initializer='random_uniform', input_dim=30))
     classificator.add(Dropout(0.2))
 
     # Add another hidden layer with Dropout
-    classificator.add(Dense(units=32, activation='relu',
+    classificator.add(Dense(units=8, activation='relu',
                             kernel_initializer='random_uniform'))
-    classificator.add(Dropout(0.2))
+    classificator.add(Dropout(0.1))
 
+    classificator.add(Dense(units=8, activation='relu',
+                            kernel_initializer='random_uniform'))
+    classificator.add(Dropout(0.1))
     # Add output layer
     classificator.add(Dense(units=1, activation='sigmoid'))
 
+    training_optimizer = keras.optimizers.Adam(lr=0.001, decay=0.0001, clipvalue=0.5)
     # Configure the learning process
     classificator.compile(
-        optimizer='adam', loss='binary_crossentropy', metrics=['binary_accuracy'])
+        optimizer=training_optimizer, loss='binary_crossentropy', metrics=['binary_accuracy'])
 
     # Training
     # Batch_size -> Calculates error for n records after this the weights will update
     # Number of times the weights will be ajusted
     classificator.fit(predictors_training, training_class,
-                      batch_size=10, epochs=200)
+                      batch_size=30, epochs=500)
 
     # Use test data
     predict_test = classificator.predict(predictors_test)
@@ -75,10 +80,11 @@ def main():
     print('Accuracy: ' + str(test_accuracy) + '\n')
     print(test_confusion_matrix)
 
-    if test_accuracy > 0.92:
+    if test_accuracy > 0.95:
         print("Network and weight will be saved.\n")
         save_network()
-
+    else:
+        print("Insufficient accuracy. Try again!\n")
 
 if (__name__ == '__main__'):
     main()
