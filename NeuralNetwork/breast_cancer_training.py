@@ -76,7 +76,7 @@ def main():
     print(test_confusion_matrix)
 
     if test_accuracy > 0.92:
-        print("Network and weight will be save.\n")
+        print("Network and weight will be saved.\n")
         save_network()
 
 
