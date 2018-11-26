@@ -42,13 +42,13 @@ def main():
     # Load the weight of network that was found in the training
     classificator.load_weights('classificator_breast_weights.h5')
 
-    newRegister = get_data()
-    #newRegister = np.array([[15.80, 8.34, 118, 900, 0.10, 0.26, 0.08, 0.134, 0.178, 0.20, 0.05, 1098, 0.87, 4500,
-    #                         145.2, 0.005, 0.04, 0.05, 0.015, 0.03, 0.007, 23.15, 16.64, 178.5, 2018, 0.14, 0.185, 0.84, 158, 0.363]])
+    #newRegister = get_data()
+    newRegister = np.array([[13.08,15.71,85.63,520,0.1075,127,0.04568,0.0311,0.1967,0.06811,0.1852,0.7477,1383,14.67,0.004097,0.01898,0.01698,0.00649,0.01678,0.002425,14.5,20.49,96.09,630.5,0.1312,0.2776,189,0.07283,0.3184,0.08183]])
+
     print(newRegister)
 
     result = classificator.predict(newRegister)
-    print('Valor calculado pela rede: %f\n' % result[0][0])
+    print('Valor calculado pela rede: %.24f\n' % result[0][0])
     result = (result > 0.5)
 
     if result:
