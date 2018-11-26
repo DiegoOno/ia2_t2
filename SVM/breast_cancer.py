@@ -9,13 +9,14 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 predictors = pd.read_csv('../data/breast_cancer_input.csv')
 classification = pd.read_csv('../data/breast_cancer_output.csv')
 
-#Check the data
-#print(predictors.shape)
-#print(predictors.head())
+# Check the data
+# print(predictors.shape)
+# print(predictors.head())
 
 print('Start training... ')
 
-pTrain, pTest, cTrain, cTest = train_test_split(predictors, classification, test_size=0.25)
+pTrain, pTest, cTrain, cTest = train_test_split(
+    predictors, classification, test_size=0.25)
 
 svClassifier = SVC(kernel='linear')
 
@@ -23,9 +24,9 @@ print("Running fit function... ")
 svClassifier.fit(pTrain, cTrain.values.reshape(-1,))
 print("Done\n")
 
-#To make predicts
+# To make predicts
 predictTest = svClassifier.predict(pTest)
-#print(predictTest)
+# print(predictTest)
 
 predictTest = (predictTest > 0.5)
 
@@ -45,6 +46,7 @@ print(testConfusionMatrix)
 print()
 
 print("Training finished.")
+
 
 def get_data():
 
@@ -78,9 +80,19 @@ def isnumber(value):
 def main():
     #newRegister = get_data()
 
-    newRegister = np.array([[15.80, 8.34, 118, 900, 0.10, 0.26, 0.08, 0.134, 0.178, 0.20, 0.05, 1098, 0.87, 4500,
-                             145.2, 0.005, 0.04, 0.05, 0.015, 0.03, 0.007, 23.15, 16.64, 178.5, 2018, 0.14, 0.185, 0.84, 158, 0.363]])
-
+    # Registros para não ter que inserir dado por dado
+    # Record 0 -> Answer = True
+    # newRegister = np.array([[13.08, 15.71, 85.63, 520, 0.1075, 127, 0.04568, 0.0311, 0.1967, 0.06811, 0.1852, 0.7477, 1383, 14.67,
+    #                         0.004097, 0.01898, 0.01698, 0.00649, 0.01678, 0.002425, 14.5, 20.49, 96.09, 630.5, 0.1312, 0.2776, 189, 0.07283, 0.3184, 0.08183]])
+    # Record 1 -> Answer = False
+    # newRegister = np.array([[13.48, 20.82, 88.4, 559.2, 0.1016, 0.1255, 0.1063, 0.05439, 172, 0.06419, 213, 0.5914, 1545, 18.52,
+    #                         0.005367, 0.02239, 0.03049, 0.01262, 0.01377, 0.003187, 15.53, 26.02, 107.3, 740.4, 161, 0.4225, 503, 0.2258, 0.2807, 0.1071]])
+    # Record 2 -> Answer = False
+    #newRegister = np.array([[17.57, 15.05, 115, 955.1, 0.09847, 0.1157, 0.09875, 0.07953, 0.1739, 0.06149, 0.6003, 0.8225, 4655, 61.1,
+    #                         0.005627, 0.03033, 0.03407, 0.01354, 0.01925, 0.003742, 20.01, 19.52, 134.9, 1227, 0.1255, 0.2812, 0.2489, 0.1456, 0.2756, 0.07919]])
+    # Recort 3 -> Answer = True
+    # newRegister = np.array([[11.46, 18.16, 73.59, 403.1, 0.08853, 0.07694, 0.03344, 0.01502, 0.1411, 0.06243, 0.3278, 1059, 2475, 22.93,
+    #                         0.006652, 0.02652, 0.02221, 0.007807, 0.01894, 0.003411, 12.68, 21.61, 82.69, 489.8, 0.1144, 0.1789, 0.1226, 0.05509, 0.2208, 0.07638]])
     print("Input: ")
     print(newRegister)
     print()
@@ -97,4 +109,3 @@ def main():
 
 if (__name__ == '__main__'):
     main()
-
