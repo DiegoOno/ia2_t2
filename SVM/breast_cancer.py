@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib as plt
+import pickle
 
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
@@ -13,39 +14,54 @@ classification = pd.read_csv('../data/breast_cancer_output.csv')
 # print(predictors.shape)
 # print(predictors.head())
 
-print('Start training... ')
+try :
+    filename = open('SVM_Model.sav', 'rb')
+    svClassifier = pickle.load(filename)
 
-pTrain, pTest, cTrain, cTest = train_test_split(
-    predictors, classification, test_size=0.25)
+except FileNotFoundError:
+    print('SVM_Model.sav not found. ')
 
-svClassifier = SVC(kernel='linear')
+    print('Start training... ')
 
-print("Running fit function... ")
-svClassifier.fit(pTrain, cTrain.values.reshape(-1,))
-print("Done\n")
+    pTrain, pTest, cTrain, cTest = train_test_split(
+        predictors, classification, test_size=0.25)
 
-# To make predicts
-predictTest = svClassifier.predict(pTest)
-# print(predictTest)
+    svClassifier = SVC(kernel='linear')
 
-predictTest = (predictTest > 0.5)
+    print("Running fit function... ")
+    svClassifier.fit(pTrain, cTrain.values.reshape(-1,))
+    print("Done\n")
 
-testAccuracy = accuracy_score(cTest, predictTest)
-testRecall = recall_score(cTest, predictTest)
-testPrecision = precision_score(cTest, predictTest)
+    print('Saving model... ')
+    filename='SVM_Model.sav'
+    pickle.dump(svClassifier, open(filename, 'wb'))
+    print('Done')
 
-testConfusionMatrix = confusion_matrix(cTest, predictTest)
+    # To make predicts
+    predictTest = svClassifier.predict(pTest)
+    # print(predictTest)
 
-print('Accuracy: ' + str(testAccuracy))
-print('Recall: ' + str(testRecall))
-print('Precision: ' + str(testPrecision))
+    predictTest = (predictTest > 0.5)
 
-print()
-print("Confusion Matrix: ")
-print(testConfusionMatrix)
-print()
+    testAccuracy = accuracy_score(cTest, predictTest)
+    testRecall = recall_score(cTest, predictTest)
+    testPrecision = precision_score(cTest, predictTest)
 
-print("Training finished.")
+    testConfusionMatrix = confusion_matrix(cTest, predictTest)
+
+    print('Accuracy: ' + str(testAccuracy))
+    print('Recall: ' + str(testRecall))
+    print('Precision: ' + str(testPrecision))
+
+    F1 = 2 * (testPrecision + testRecall) / (testPrecision + testRecall)
+    print('F-Measure: ' + str())
+
+    print()
+    print("Confusion Matrix: ")
+    print(testConfusionMatrix)
+    print()
+
+    print("Training finished.")
 
 
 def get_data():
@@ -75,7 +91,6 @@ def isnumber(value):
     except ValueError:
         return False
     return True
-
 
 def main():
     #newRegister = get_data()

@@ -1,3 +1,6 @@
 .vscode/settings.json
 NeuralNetwork/.vscode/settings.json
 SVM/.vscode/settings.json
+
+*.swp
+_pycache__/
